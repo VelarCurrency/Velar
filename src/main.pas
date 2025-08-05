@@ -6,6 +6,7 @@ uses
 
 var
   username: string;
+  input: string;
 
 begin
   username := 'Allexander Bergmans';
@@ -26,4 +27,19 @@ begin
   WriteLn('Sync complete. You can now perform node operations.');
   WriteLn('Welcome to the Velar Currency Node!');
   WriteLn('For assistance, please refer to the documentation or contact support.');
+
+  while True do
+  begin
+    Write('> ');
+    ReadLn(input);
+
+    if input = 'exit' then
+      Break
+    else if input = 'status' then
+      WriteLn('Blockchain synced and running normally.')
+    else if input = 'help' then
+      WriteLn('Available commands: status, exit, help')
+    else
+      WriteLn('Unknown command. Type "help" for options.');
+  end;
 end.
