@@ -2,11 +2,13 @@ program VelarCurrency;
 
 uses
   SysUtils,
-  copyright;
+  copyright,
+  commands;
 
 var
   username: string;
   input: string;
+  exitRequested: Boolean;
 
 begin
   username := 'Allexander Bergmans';
@@ -28,18 +30,12 @@ begin
   WriteLn('Welcome to the Velar Currency Node!');
   WriteLn('For assistance, please refer to the documentation or contact support.');
 
-  while True do
+  exitRequested := False;
+  while not exitRequested do
   begin
     Write('> ');
     ReadLn(input);
-
-    if input = 'exit' then
-      Break
-    else if input = 'status' then
-      WriteLn('Blockchain synced and running normally.')
-    else if input = 'help' then
-      WriteLn('Available commands: status, exit, help')
-    else
-      WriteLn('Unknown command. Type "help" for options.');
+    exitRequested := HandleCommand(input);
   end;
 end.
+

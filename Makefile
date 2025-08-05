@@ -3,25 +3,24 @@ BUILD_DIR := build
 BIN := VelarCurrency
 FPC := fpc
 
-# List all unit files (not main program)
-UNITS := $(SRC_DIR)/copyright.pas
-MAIN := $(SRC_DIR)/main.pas
+UNITS := copyright commands
+MAIN := main.pas
 
-all: $(BUILD_DIR)/$(BIN)
+# Compile all units to build dir
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.pas | $(BUILD_DIR)
+	$(FPC)  -o$@ -FU$(BUILD_DIR) $<
 
-# Ensure build directory exists
+# Compile main and link executable to build dir
+$(BUILD_DIR)/$(BIN): $(patsubst %, $(BUILD_DIR)/%.o, $(UNITS)) $(SRC_DIR)/$(MAIN) | $(BUILD_DIR)
+	$(FPC) -FE$(BUILD_DIR) -FU$(BUILD_DIR) -o$@ $(SRC_DIR)/$(MAIN)
+
+# Create build dir if it doesn't exist
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# Compile units first (no linking)
-$(SRC_DIR)/copyright.o: $(SRC_DIR)/copyright.pas | $(BUILD_DIR)
-	$(FPC) $<
-
-# Compile main and link, output executable to build dir
-$(BUILD_DIR)/$(BIN): $(UNITS:.pas=.o) $(MAIN) | $(BUILD_DIR)
-	$(FPC) -o$@ $(MAIN)
+all: $(BUILD_DIR)/$(BIN)
 
 clean:
-	rm -f $(BUILD_DIR)/$(BIN) $(SRC_DIR)/*.o $(SRC_DIR)/*.ppu
-	rm -f $(SRC_DIR)/*.bak $(SRC_DIR)/*.res
 	rm -rf $(BUILD_DIR)
+	rm -f $(SRC_DIR)/*.o $(SRC_DIR)/*.ppu
+	rm -f $(SRC_DIR)/*.bak $(SRC_DIR)/*.res
