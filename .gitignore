@@ -1,0 +1,11 @@
+src/main.o
+src/main
+build/
+*.o
+*.exe
+*.out
+*.log
+*.tmp
+*.bak
+*.swp
+*.class
