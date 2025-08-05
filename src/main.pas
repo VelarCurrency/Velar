@@ -2,7 +2,7 @@ program VelarCurrency;
 
 uses
   SysUtils,
-  copyright;  // Make sure this matches the unit name exactly
+  copyright;
 
 var
   username: string;
